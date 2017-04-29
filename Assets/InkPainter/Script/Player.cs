@@ -6,8 +6,14 @@ public class Player : MonoBehaviour {
 	public int energy;
 	public int energyMax;
 	public int playerColor;		//色(RGB32? 今はID)
-
 	public Satellite satellite;	//乗ってる衛星
+
+  public AudioClip audioPaint;
+  public AudioClip audioPaintError;
+  public AudioClip audioRide;
+  public AudioClip audioRideError;
+  public AudioClip audioRecovery;
+
   private string inspectorName;
   private AudioSource audio = null;
   private KeyCode paintKeyCode = KeyCode.Space;
@@ -21,12 +27,14 @@ public class Player : MonoBehaviour {
     initSatellite ();
 	}
 
-  public void rideSatellite(string strValue){
-		//ここで飛び移るアニメーション TODO
-    //音とか TODO
-
-    this.inspectorName = strValue;
-    this.transform.parent = GameObject.Find(strValue).transform;   
+  private void rideSatelliteWithMotion(string strValue){
+    //ここで飛び移るアニメーション TODO
+    Shout (this.audioRide);
+    rideSatellite (strValue);
+  }
+  public void rideSatellite(string str_value){
+    this.inspectorName = str_value;
+    this.transform.parent = GameObject.Find(str_value).transform;   
     this.satellite = this.transform.parent.GetComponent(typeof(Satellite)) as Satellite;
   }
 
@@ -61,16 +69,18 @@ public class Player : MonoBehaviour {
 
     if (energy > satellite.energyComsumption) {
       if (Input.GetKey (this.paintKeyCode)) {
-        Shout ();
+        Shout (this.audioPaint);
         energy -= satellite.Paint (playerColor);
       }
     } else {
-      // TODO 鳴きたい
+      if (Input.GetKey (this.paintKeyCode)) {
+        Shout (this.audioPaintError);
+      }
     }
 
     if (energy <= satellite.energyComsumption) {
       if (Input.GetKey (this.recoveryKeyCode)) {
-        // TODO 鳴きたい
+        Shout (this.audioRecovery);
         this.energy = this.energyMax;
       }
     }
@@ -86,8 +96,8 @@ public class Player : MonoBehaviour {
     return energy;
   }
 	//なく
-	public void Shout(){
-    // playerごとの音を出すメソッド TODO
+  public void Shout(AudioClip audioval){
+    audio.clip = audioval;
     audio.Play();
 	}
 		
@@ -107,14 +117,14 @@ public class Player : MonoBehaviour {
         if(this.inspectorName == strValue){
           // 自分なので何もしない
         }else{
-          // 相手がのっているかチェック TODO
+          // 相手がのっているかチェック
           if (true == satellite_val.isUserRiding) {
             Debug.Log ("satellite:"+strValue+" is user riding........");
-            // TODO 鳴く
+            Shout (this.audioRideError);
           } else {
             Debug.Log ("satellite:"+strValue+" is not user riding!!");
             // のっていなければのりかえ
-            rideSatellite (strValue);
+            rideSatelliteWithMotion (strValue);
           }
         }
       }
