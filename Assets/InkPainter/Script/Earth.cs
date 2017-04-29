@@ -13,6 +13,10 @@ public class Earth : MonoBehaviour {
 		paintObject = GetComponent<InkCanvas> ();
 	}
 
+	void Update () {
+		transform.Rotate(new Vector3(0, 1f, 0));
+	}
+
 
 	public float CalculateMyArea(){
 		int point = 0;
