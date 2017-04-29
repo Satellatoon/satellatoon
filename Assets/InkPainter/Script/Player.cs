@@ -8,6 +8,7 @@ public class Player : MonoBehaviour {
 	public int playerColor;		//色(RGB32? 今はID)
 
 	public Satellite satellite;	//乗ってる衛星
+  private string inspectorName;
   private AudioSource audio = null;
   private KeyCode paintKeyCode = KeyCode.Space;
   private KeyCode recoveryKeyCode = KeyCode.Space;
@@ -16,29 +17,32 @@ public class Player : MonoBehaviour {
 	void Start(){
 		this.playerColor = GameMaster.instance.AddPlayer ();
     this.audio = GetComponent<AudioSource>();
-    initKey ();
+    initKeyMap ();
     initSatellite ();
 	}
 
-	public void RideSat(Satellite selectedNewSat){
-		//ここで飛び移るアニメーションとか 音とか TODO
-		this.satellite = selectedNewSat;
-	}
+  public void rideSatellite(string strValue){
+		//ここで飛び移るアニメーション TODO
+    //音とか TODO
 
-  void initSatellite(){
-
-    string inspectorName;
-    if (this.playerColor == 0) { // player1
-      inspectorName = "Satellite1";
-    } else { // player2
-      inspectorName = "Satellite2";
-    }
-
-    this.transform.parent = GameObject.Find(inspectorName).transform;   
+    this.inspectorName = strValue;
+    this.transform.parent = GameObject.Find(strValue).transform;   
     this.satellite = this.transform.parent.GetComponent(typeof(Satellite)) as Satellite;
   }
 
-  void initKey(){
+  void initSatellite(){
+
+    string strValue;
+    if (this.playerColor == 0) { // player1
+      strValue = "Satellite1"; // default
+    } else { // player2
+      strValue = "Satellite2"; // default
+    }
+
+    this.rideSatellite (strValue);
+  }
+
+  void initKeyMap(){
     if (this.playerColor == 0) { // player1
       this.paintKeyCode = KeyCode.L;
       this.recoveryKeyCode = KeyCode.P;
@@ -88,22 +92,31 @@ public class Player : MonoBehaviour {
 		
 	void OnTriggerStay(Collider other){
 		if (other.tag.Equals ("Satellite")) {
-			//ほかの衛星と当たればここにくる
+			//ほかの衛星と当たればここにくる`
 			//自分以外を排除することに注意
 
-      if (Input.GetKey (this.moveKeyCode)) {
-        Satellite value = other.GetComponent(typeof(Satellite)) as Satellite;
+      Satellite satellite_val = other.GetComponent(typeof(Satellite)) as Satellite;
+      var strValue = satellite_val.ToString ();
+      Debug.Log ("OnTriggerStay :" + strValue);
 
-        if(true == value.Equals(this.satellite)){
+      if (Input.GetKey (this.moveKeyCode)) {
+        Debug.Log ("moveKey push!!");
+
+        //value.GetInstanceID
+        if(this.inspectorName == strValue){
           // 自分なので何もしない
         }else{
           // 相手がのっているかチェック TODO
-          //log
-          // のっていなければのりかえ
-          RideSat (value);
+          if (true == satellite_val.isUserRiding) {
+            Debug.Log ("satellite:"+strValue+" is user riding........");
+            // TODO 鳴く
+          } else {
+            Debug.Log ("satellite:"+strValue+" is not user riding!!");
+            // のっていなければのりかえ
+            rideSatellite (strValue);
+          }
         }
       }
-
 		}
 	}
 }
