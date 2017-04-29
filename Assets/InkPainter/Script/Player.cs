@@ -44,13 +44,14 @@ public class Player : MonoBehaviour {
 
   void initKeyMap(){
     if (this.playerColor == 0) { // player1
-      this.paintKeyCode = KeyCode.L;
-      this.recoveryKeyCode = KeyCode.P;
-      this.moveKeyCode = KeyCode.Comma;
-    } else { // player2
       this.paintKeyCode = KeyCode.A;
       this.recoveryKeyCode = KeyCode.Q;
       this.moveKeyCode = KeyCode.Z;
+   } else { // player2
+      this.paintKeyCode = KeyCode.L;
+      this.recoveryKeyCode = KeyCode.P;
+      this.moveKeyCode = KeyCode.Comma;
+
     }
   }
 
