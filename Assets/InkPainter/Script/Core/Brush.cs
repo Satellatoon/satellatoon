@@ -132,6 +132,8 @@ namespace Es.InkPainter
 		[SerializeField]
 		private HeightBlendType heightBlendType;
 
+		public int playerID;
+
 		/// <summary>
 		/// Brush texture.
 		/// </summary>

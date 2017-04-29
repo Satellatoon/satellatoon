@@ -22,6 +22,19 @@ namespace Es.InkPainter
 	[DisallowMultipleComponent]
 	public class InkCanvas : MonoBehaviour
 	{
+
+		int[,] textureMatrix = new int[1000,1000];
+		public void InitTextureMatrix(){
+			for (int i = 0; i < 1000; i++) {
+				for (int j = 0; j < 1000; j++) {
+					textureMatrix [i, j] = -1;
+				}
+			}
+
+		}
+
+
+
 		[Serializable]
 		public class PaintSet
 		{
@@ -208,6 +221,7 @@ namespace Es.InkPainter
 			SetMaterial();
 			SetTexture();
 			MeshDataCache();
+			InitTextureMatrix ();
 		}
 
 		private void Start()
@@ -243,7 +257,7 @@ namespace Es.InkPainter
 			else
 				Debug.LogWarning("Sometimes if the MeshFilter or SkinnedMeshRenderer does not exist in the component part does not work correctly.");
 		}
-
+			
 		/// <summary>
 		/// To initialize the shader property ID.
 		/// </summary>
@@ -492,6 +506,22 @@ namespace Es.InkPainter
 
 		#region PublicMethod
 
+		private void WriteColorMatrix(int playerID,float brushScale,Vector2 uv){
+			int pointX = (int)Mathf.Clamp (uv.x * 1000, brushScale/2+1, 999-brushScale/2-1);
+			int pointY = (int)Mathf.Clamp (uv.y * 1000, brushScale/2+1, 999-brushScale/2-1);
+			float arrangedBrushScale = brushScale * 500;
+
+			for (int i = (int)(pointX - arrangedBrushScale / 2); i< (int)(pointX + arrangedBrushScale / 2); i++) {
+				for (int j = (int)(pointY - arrangedBrushScale / 2);j< (int)(pointY + arrangedBrushScale / 2); j++) {
+					textureMatrix[i,j]=playerID;
+				}
+			}
+		}
+
+		public int[,] GetColorMatrix(){
+			return textureMatrix;
+		}
+
 		/// <summary>
 		/// Paint processing that UV coordinates to the specified.
 		/// </summary>
@@ -500,6 +530,9 @@ namespace Es.InkPainter
 		/// <returns>The success or failure of the paint.</returns>
 		public bool PaintUVDirect(Brush brush, Vector2 uv)
 		{
+			//uvを1/1000精度でペイント
+			WriteColorMatrix(brush.playerID,brush.Scale,uv);
+
 			#region ErrorCheck
 
 			if(brush == null)
@@ -698,7 +731,7 @@ namespace Es.InkPainter
 				return null;
 			return data.paintNormalTexture;
 		}
-
+			
 		/// <summary>
 		/// Set paint texture.
 		/// </summary>

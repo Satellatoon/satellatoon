@@ -21,9 +21,17 @@ public class Player : MonoBehaviour {
 	void Update(){
 		//spaceキーでぬる
 		//time.deltaで要調整？
-		if (energy > satellite.energyComsumption) {
-			if (Input.GetKey (KeyCode.Space)) {
-				energy -= satellite.Paint (playerColor);
+		if (playerColor == 0) {
+			if (energy > satellite.energyComsumption) {
+				if (Input.GetKey (KeyCode.Space)) {
+					energy -= satellite.Paint (playerColor);
+				}
+			}
+		} else {
+			if (energy > satellite.energyComsumption) {
+				if (Input.GetKey (KeyCode.A)) {
+					energy -= satellite.Paint (playerColor);
+				}
 			}
 		}
 	}

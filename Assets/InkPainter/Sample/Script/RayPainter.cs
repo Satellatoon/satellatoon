@@ -8,6 +8,7 @@ public class RayPainter : MonoBehaviour
 	[SerializeField]
 	private Brush brushOpponent;
 
+
 	public void Paint(int playerColor){
 		Ray ray = new Ray (transform.position, -transform.up);
 		bool success = true;
@@ -31,7 +32,9 @@ public class RayPainter : MonoBehaviour
 			Debug.Log ("ray enabled");
 			InkCanvas paintObject = hitInfo.transform.GetComponent<InkCanvas>();
 			if (paintObject != null) {
+				brush.playerID = playerColor;
 				success = paintObject.Paint(brush, hitInfo);
+
 				Debug.Log ("ray enabled"+ success);
 			}
 

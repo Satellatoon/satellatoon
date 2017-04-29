@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameMaster : MonoBehaviour {
 	enum STATE{
@@ -9,6 +10,37 @@ public class GameMaster : MonoBehaviour {
 		END,
 	}
 	int playerid = 0;
+	STATE state=STATE.START;
+
+	public float restGameTime = 180;
+	public Text textRestTime;
+	public Text myCoverageText;
+	public Text enemyCoverageText;
+
+	float calculateAreasTime=0;
+	void Update(){
+		restGameTime -= Time.deltaTime;
+		if (restGameTime<=0) {
+			state = STATE.END;
+		}
+		textRestTime.text = ((int)restGameTime).ToString();
+
+
+		switch (state) {
+		case STATE.PLAYING:
+		case STATE.START:
+			//100msに1回
+			calculateAreasTime+=Time.deltaTime;
+			if (calculateAreasTime > 0.100) {
+				calculateAreasTime = 0;
+
+				Debug.Log("better= " + GetBetterPlayerID ());
+			}
+			break;
+		}
+
+	}
+
 	//
 	//singleton game state manager
 	//
@@ -25,6 +57,10 @@ public class GameMaster : MonoBehaviour {
 		}
 	}
 
+	void Start(){
+		state = STATE.START;
+	}
+
 	public void ResetGame(){
 		playerid = 0;
 	}
@@ -35,12 +71,31 @@ public class GameMaster : MonoBehaviour {
 
 	//形成判断する
 	public int GetBetterPlayerID(){
-		return 0;
+		float myArea = earth.CalculateMyArea ();
+		float enemyArea = earth.CalculateEnemyArea ();
+
+		Debug.Log ("my Area coverage=" + myArea);
+		Debug.Log ("enemy Area coverage=" + enemyArea);
+
+		myCoverageText.text = (int)(myArea * 100) + "%";
+		enemyCoverageText.text = (int)(enemyArea * 100) + "%";
+		if (myArea > enemyArea) {
+			return 0;
+		} else {
+			return 1;
+		}
 	}
 
 	//勝った方のIDを返す
 	public int GetWinnerPlayerID(){
 		//0か1
-		return 0;
+		float myArea = earth.CalculateMyArea ();
+		float enemyArea = earth.CalculateEnemyArea ();
+
+		if (myArea > enemyArea) {
+			return 0;
+		} else {
+			return 1;
+		}
 	}
 }
