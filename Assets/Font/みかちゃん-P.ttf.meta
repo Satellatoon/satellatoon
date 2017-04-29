@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 02420d87088d233469fff985c58be784
+timeCreated: 1493461253
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: mikachan-P
+  fontNames:
+  - mikachan-P
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

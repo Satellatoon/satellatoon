@@ -22,6 +22,13 @@ public class GameMaster : MonoBehaviour {
 		restGameTime -= Time.deltaTime;
 		if (restGameTime<=0) {
 			state = STATE.END;
+
+			int winner = GetWinnerPlayerID ();
+			if (winner == 0) {
+				Debug.Log ("player 1 won!");
+			} else {
+				Debug.Log ("player 2 won!");
+			}
 		}
 		textRestTime.text = ((int)restGameTime).ToString();
 

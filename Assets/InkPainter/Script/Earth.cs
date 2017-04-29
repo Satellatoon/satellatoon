@@ -25,7 +25,7 @@ public class Earth : MonoBehaviour {
 			}
 		}
 
-		Debug.Log (" " + (float)point/(matrix.GetLength(0)*matrix.GetLength(1)) );
+//		Debug.Log (" " + (float)point/(matrix.GetLength(0)*matrix.GetLength(1)) );
 
 		return (float)point/(matrix.GetLength(0)*matrix.GetLength(1));
 	}
@@ -40,7 +40,7 @@ public class Earth : MonoBehaviour {
 			}
 		}
 
-		Debug.Log (" " + (float)point/(matrix.GetLength(0)*matrix.GetLength(1)) );
+//		Debug.Log (" " + (float)point/(matrix.GetLength(0)*matrix.GetLength(1)) );
 
 		return (float)point/(matrix.GetLength(0)*matrix.GetLength(1));
 	}
