@@ -22,8 +22,8 @@ public class Satellite : MonoBehaviour
 		transform.RotateAround(ellipseCenter.transform.position,new Vector3(1,0,0),angle);
 	}
 
-	public int Paint(){
-		rayPainter.Paint ();
+	public int Paint(int playerID){
+		rayPainter.Paint (playerID);
 		return energyComsumption;
 	}
 }

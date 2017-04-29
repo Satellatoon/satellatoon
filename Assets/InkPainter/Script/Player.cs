@@ -5,8 +5,13 @@ using UnityEngine;
 public class Player : MonoBehaviour {
 	public int energy;
 	public int energyMax;
+	public int playerID;
 
 	public Satellite ridingSat;
+
+	void Start(){
+		playerID = GameMan.instance.AddPlayer ();
+	}
 
 	public void RideSat(Satellite selectedNewSat){
 		//ここで飛び移るアニメーションとか
@@ -15,8 +20,8 @@ public class Player : MonoBehaviour {
 
 	void Update(){
 		if (energy > ridingSat.energyComsumption) {
-			if (Input.GetKeyDown (KeyCode.Space)) {
-				energy -= ridingSat.Paint ();
+			if (Input.GetKey (KeyCode.Space)) {
+				energy -= ridingSat.Paint (playerID);
 			}
 		}
 	}
