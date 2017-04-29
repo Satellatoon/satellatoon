@@ -17,13 +17,26 @@ public class Player : MonoBehaviour {
 		this.playerColor = GameMaster.instance.AddPlayer ();
     this.audio = GetComponent<AudioSource>();
     initKey ();
+    initSatellite ();
 	}
 
 	public void RideSat(Satellite selectedNewSat){
-		//ここで飛び移るアニメーションとか TODO
-
-		satellite = selectedNewSat;
+		//ここで飛び移るアニメーションとか 音とか TODO
+		this.satellite = selectedNewSat;
 	}
+
+  void initSatellite(){
+
+    string inspectorName;
+    if (this.playerColor == 0) { // player1
+      inspectorName = "Satellite1";
+    } else { // player2
+      inspectorName = "Satellite2";
+    }
+
+    this.transform.parent = GameObject.Find(inspectorName).transform;   
+    this.satellite = this.transform.parent.GetComponent(typeof(Satellite)) as Satellite;
+  }
 
   void initKey(){
     if (this.playerColor == 0) { // player1
