@@ -8,14 +8,14 @@ public class RayPainter : MonoBehaviour
 	[SerializeField]
 	private Brush brushOpponent;
 
-	public void Paint(int playerID){
+	public void Paint(int playerColor){
 		Ray ray = new Ray (transform.position, -transform.up);
 		bool success = true;
 		RaycastHit hitInfo;
 		Debug.Log ("update");
 
 		Brush brush = brushMine;
-		switch (playerID) {
+		switch (playerColor) {
 		case 0:
 			brush = brushMine;
 			break;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameMan : MonoBehaviour {
+public class GameMaster : MonoBehaviour {
 	enum STATE{
 		START,
 		PLAYING,
@@ -12,9 +12,11 @@ public class GameMan : MonoBehaviour {
 	//
 	//singleton game state manager
 	//
-	public static GameMan instance = null;
+	public Earth earth;
+
+	public static GameMaster instance = null;
 	void Awake(){
-		
+
 		if (instance == null) {
 			DontDestroyOnLoad (this.gameObject);
 			instance = this;
@@ -29,5 +31,16 @@ public class GameMan : MonoBehaviour {
 
 	public int AddPlayer(){
 		return playerid++;
+	}
+
+	//形成判断する
+	public int GetBetterPlayerID(){
+		return 0;
+	}
+
+	//勝った方のIDを返す
+	public int GetWinnerPlayerID(){
+		//0か1
+		return 0;
 	}
 }

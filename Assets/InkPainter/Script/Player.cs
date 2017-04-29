@@ -5,24 +5,37 @@ using UnityEngine;
 public class Player : MonoBehaviour {
 	public int energy;
 	public int energyMax;
-	public int playerID;
+	public int playerColor;		//色(RGB32? 今はID)
 
-	public Satellite ridingSat;
+	public Satellite satellite;	//乗ってる衛星
 
 	void Start(){
-		playerID = GameMan.instance.AddPlayer ();
+		playerColor = GameMaster.instance.AddPlayer ();
 	}
 
 	public void RideSat(Satellite selectedNewSat){
 		//ここで飛び移るアニメーションとか
-		ridingSat = selectedNewSat;
+		satellite = selectedNewSat;
 	}
 
 	void Update(){
-		if (energy > ridingSat.energyComsumption) {
+		//spaceキーでぬる
+		//time.deltaで要調整？
+		if (energy > satellite.energyComsumption) {
 			if (Input.GetKey (KeyCode.Space)) {
-				energy -= ridingSat.Paint (playerID);
+				energy -= satellite.Paint (playerColor);
 			}
+		}
+	}
+
+	//なく
+	public void Shout(){
+	}
+		
+	void OnTriggerStay(Collider other){
+		if (other.tag.Equals ("Satellite")) {
+			//ほかの衛星と当たればここにくる
+			//自分以外を排除することに注意
 		}
 	}
 }
