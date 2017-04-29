@@ -5,9 +5,17 @@ public class Satellite : MonoBehaviour
 {
 	//円周用(中心・スピード)
 	public GameObject ellipseCenter;
-	public float speed;
+	public float MeanMotion; 
+	private float speed;
+	private Vector3 rotationAxis;
 
+	// ユーザが乗っているか 
+	public bool isUserRiding = false; 
 
+	//	インスタンスを追加するコード
+	//	GameObject obj;
+	//	Satellite sat = obj.GetComponent<Satellite>();
+	//	Instantiate(sat)
 
 	public int energyComsumption;
 	public float loudness;		//塗れる範囲
@@ -23,6 +31,15 @@ public class Satellite : MonoBehaviour
 	RayPainter rayPainter;
 	void Start(){
 		this.rayPainter = GetComponent<RayPainter> ();
+
+		if (MeanMotion == 0.0) { 
+			MeanMotion = 8460; // 60 x 60 x 24 x 0.1[rps] 
+		} 
+		speed = 360.0f * MeanMotion / 86400.0f; 
+
+		rotationAxis [0] = Random.Range (0, 100); 
+		rotationAxis [1] = Random.Range (0, 100); 
+		rotationAxis [2] = Random.Range (0, 100); 
 	}
 
 
@@ -32,8 +49,9 @@ public class Satellite : MonoBehaviour
 
 	void MoveToCircle(){
 		float angle = speed * Time.deltaTime;
-		transform.RotateAround(ellipseCenter.transform.position,new Vector3(1,0,0),angle);
+		transform.RotateAround(ellipseCenter.transform.position, rotationAxis, angle); 
 	}
+
 
 	//塗る
 	public int Paint(int playerColor){
