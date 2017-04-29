@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using uTools;
 
 public class GameMaster : MonoBehaviour {
-	enum STATE{
+	public enum STATE{
 		START,
 		PLAYING,
 		END,
@@ -17,7 +18,24 @@ public class GameMaster : MonoBehaviour {
 	public Text myCoverageText;
 	public Text enemyCoverageText;
 
+	public TweenPosition endTextTweenPos;
+
 	float calculateAreasTime=0;
+	public void StartGameEndProc(){
+		endTextTweenPos.ResetToBeginning ();
+		endTextTweenPos.enabled = true;
+		endTextTweenPos.PlayForward ();
+	}
+
+	/// <summary>
+	/// Gets the state of the game.
+	/// </summary>
+	/// <returns>The game state.(enum STATE)</returns>
+	public STATE GetGameState(){
+		return state;
+	}
+
+
 	void Update(){
 		restGameTime -= Time.deltaTime;
 		if (restGameTime<=0) {
@@ -66,6 +84,7 @@ public class GameMaster : MonoBehaviour {
 
 	void Start(){
 		state = STATE.START;
+		endTextTweenPos.enabled = false;
 	}
 
 	public void ResetGame(){
