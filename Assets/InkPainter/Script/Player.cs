@@ -23,15 +23,17 @@ public class Player : MonoBehaviour {
 	void Update(){
 		//spaceキーでぬる
 		//time.deltaで要調整？
-		if (playerColor == 0) {
+		if (playerColor == 0) { // player1
 			if (energy > satellite.energyComsumption) {
 				if (Input.GetKey (KeyCode.Space)) {
+          Shout ();
 					energy -= satellite.Paint (playerColor);
 				}
 			}
-		} else {
+		} else { // player2
 			if (energy > satellite.energyComsumption) {
 				if (Input.GetKey (KeyCode.A)) {
+          Shout ();
 					energy -= satellite.Paint (playerColor);
 				}
 			}
@@ -43,7 +45,7 @@ public class Player : MonoBehaviour {
     energy = energyMax;
   }
   // 体力取得
-  public void GetEnergy()
+  public int GetEnergy()
   {
     return energy;
   }
