@@ -23,7 +23,7 @@ public class GameMaster : MonoBehaviour {
 	float calculateAreasTime=0;
 	public void StartGameEndProc(){
 		endTextTweenPos.ResetToBeginning ();
-		endTextTweenPos.enabled = true;
+		endTextTweenPos.gameObject.SetActive (true);
 		endTextTweenPos.PlayForward ();
 	}
 
@@ -37,6 +37,10 @@ public class GameMaster : MonoBehaviour {
 
 
 	void Update(){
+		if (state == STATE.END) {
+			return;
+		}
+
 		restGameTime -= Time.deltaTime;
 		if (restGameTime<=0) {
 			state = STATE.END;
@@ -47,6 +51,7 @@ public class GameMaster : MonoBehaviour {
 			} else {
 				Debug.Log ("player 2 won!");
 			}
+			StartGameEndProc ();
 		}
 		textRestTime.text = ((int)restGameTime).ToString();
 
@@ -84,7 +89,7 @@ public class GameMaster : MonoBehaviour {
 
 	void Start(){
 		state = STATE.START;
-		endTextTweenPos.enabled = false;
+		endTextTweenPos.gameObject.SetActive (false);
 	}
 
 	public void ResetGame(){
