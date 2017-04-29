@@ -11,6 +11,7 @@ public class Player : MonoBehaviour {
   private AudioSource audio = null;
   private KeyCode paintKeyCode = KeyCode.Space;
   private KeyCode recoveryKeyCode = KeyCode.Space;
+  private KeyCode moveKeyCode = KeyCode.Space;
 
 	void Start(){
 		this.playerColor = GameMaster.instance.AddPlayer ();
@@ -19,23 +20,21 @@ public class Player : MonoBehaviour {
 	}
 
 	public void RideSat(Satellite selectedNewSat){
-		//ここで飛び移るアニメーションとか
+		//ここで飛び移るアニメーションとか TODO
+
 		satellite = selectedNewSat;
 	}
 
   void initKey(){
     if (this.playerColor == 0) { // player1
       this.paintKeyCode = KeyCode.L;
+      this.recoveryKeyCode = KeyCode.P;
+      this.moveKeyCode = KeyCode.Comma;
     } else { // player2
       this.paintKeyCode = KeyCode.A;
-    }
-
-    if (this.playerColor == 0) { // player1
-      this.recoveryKeyCode = KeyCode.P;
-    } else { // player2
       this.recoveryKeyCode = KeyCode.Q;
+      this.moveKeyCode = KeyCode.Z;
     }
-
   }
 
 	void Update(){
@@ -78,9 +77,20 @@ public class Player : MonoBehaviour {
 		if (other.tag.Equals ("Satellite")) {
 			//ほかの衛星と当たればここにくる
 			//自分以外を排除することに注意
-      //Satellite value = other.GetComponents();
-      //
-      //value.Paint ();
+
+      if (Input.GetKey (this.moveKeyCode)) {
+        Satellite value = other.GetComponent(typeof(Satellite)) as Satellite;
+
+        if(true == value.Equals(this.satellite)){
+          // 自分なので何もしない
+        }else{
+          // 相手がのっているかチェック TODO
+          //log
+          // のっていなければのりかえ
+          RideSat (value);
+        }
+      }
+
 		}
 	}
 }
