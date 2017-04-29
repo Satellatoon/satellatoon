@@ -27,6 +27,12 @@ public class GameMaster : MonoBehaviour {
 		endTextTweenPos.PlayForward ();
 	}
 
+	public void StartGameStartProc(){
+	}
+
+	public void ShowRest1MinInfo(){
+	}
+
 	/// <summary>
 	/// Gets the state of the game.
 	/// </summary>
