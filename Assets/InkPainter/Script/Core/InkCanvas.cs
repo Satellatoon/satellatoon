@@ -507,9 +507,10 @@ namespace Es.InkPainter
 		#region PublicMethod
 
 		private void WriteColorMatrix(int playerID,float brushScale,Vector2 uv){
-			int pointX = (int)Mathf.Clamp (uv.x * 1000, brushScale/2+1, 999-brushScale/2-1);
-			int pointY = (int)Mathf.Clamp (uv.y * 1000, brushScale/2+1, 999-brushScale/2-1);
-			float arrangedBrushScale = brushScale * 500;
+			float arrangedBrushScale = brushScale * 999;
+			int pointX = (int)Mathf.Clamp (uv.x * 1000, arrangedBrushScale / 2+1, 999- arrangedBrushScale / 2-1);
+			int pointY = (int)Mathf.Clamp (uv.y * 1000, arrangedBrushScale / 2+1, 999- arrangedBrushScale / 2-1);
+			
 
 			for (int i = (int)(pointX - arrangedBrushScale / 2); i< (int)(pointX + arrangedBrushScale / 2); i++) {
 				for (int j = (int)(pointY - arrangedBrushScale / 2);j< (int)(pointY + arrangedBrushScale / 2); j++) {
