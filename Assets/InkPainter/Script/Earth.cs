@@ -15,7 +15,6 @@ public class Earth : MonoBehaviour {
 
 	float updateTime = 0f;
 	void Update () {
-		transform.Rotate(new Vector3(0, 1f, 0));
 		updateTime += Time.deltaTime;
 		if (updateTime > 0.25f)
 		{
