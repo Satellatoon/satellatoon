@@ -146,9 +146,9 @@ public class Satellite : MonoBehaviour
 		pos.x = (float)eci.Position.X;
 		pos.y = (float)eci.Position.Y;
 		pos.z = (float)eci.Position.Z;
-		Debug.Log (pos);
+		//Debug.Log (pos);
 
-		Debug.Log (Time.fixedTime);
+		//Debug.Log (Time.fixedTime);
 
 		// 特定の位置に移動して 地球を向く
 		transform.position = pos;
