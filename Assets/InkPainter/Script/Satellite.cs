@@ -15,6 +15,10 @@ public class Satellite : MonoBehaviour
 	public float MeanAnomaly;	// 平均近点角
 	public float MeanMotion; 	// 平均運動
 
+	public string tle1;			// TLE
+	public string tle2;			// TLE
+	public string tle3;			// TLE
+
 	private float speed;
 	private Vector3 rotationAxis;
 
@@ -24,7 +28,6 @@ public class Satellite : MonoBehaviour
 	private Vector3 posEciNow;		// 現在位置
 
 	private Zeptomoby.OrbitTools.Satellite sat;
-	private Eci eci;
 
 	// 
 	private float velAngle;
@@ -69,12 +72,12 @@ public class Satellite : MonoBehaviour
 		string str2 = "1 88888U          80275.98708465  .00073094  13844-3  66816-4 0     8";
 		string str3 = "2 88888  72.8435 115.9689 0086731  52.6988 110.5714 16.05824518   105";
 
+		Tle tle = new Tle(tle1, tle2, tle3);
+		sat = new Zeptomoby.OrbitTools.Satellite(tle);
+		Eci eci = sat.PositionEci(0);
 		eci.ScalePosVector (0.01);
 		eci.ScaleVelVector (0.01);
 
-		Tle tle1 = new Tle(str1, str2, str3);
-		sat = new Zeptomoby.OrbitTools.Satellite(tle1);
-		eci = sat.PositionEci(0);
 		Vector3 pos;
 		pos.x = (float)eci.Position.X;
 		pos.y = (float)eci.Position.Y;
@@ -137,11 +140,9 @@ public class Satellite : MonoBehaviour
 		pos.y = r * Mathf.Cos (angle * Mathf.PI / 180.0f);
 		pos.z = r * Mathf.Sin (angle * Mathf.PI / 180.0f);
 
-		// 特定の位置に移動して 地球を向く
-		transform.position = pos;
-		transform.LookAt (new Vector3 (0, 0, 0));
-
-		Eci eci = sat.PositionEci(0);
+		Eci eci = sat.PositionEci(Time.fixedTime / 60.0f * 100.0f);
+		eci.ScalePosVector (0.01);
+		eci.ScaleVelVector (0.01);
 		pos.x = (float)eci.Position.X;
 		pos.y = (float)eci.Position.Y;
 		pos.z = (float)eci.Position.Z;
@@ -149,6 +150,9 @@ public class Satellite : MonoBehaviour
 
 		Debug.Log (Time.fixedTime);
 
+		// 特定の位置に移動して 地球を向く
+		transform.position = pos;
+		transform.LookAt (new Vector3 (0, 0, 0));
 	}
 
 	void OrbitToolsTest(){
