@@ -64,8 +64,8 @@ public class Satellite : MonoBehaviour
 		rotationAxis [1] = UnityEngine.Random.Range (0, 100); 
 		rotationAxis [2] = UnityEngine.Random.Range (0, 100); 
 
-		//		WriteFile ();
-		LoadTLS();
+		// WriteFile ();
+		// LoadTLS();
 
 		// Test SGP4
 		string str1 = "SGP4 Test";
