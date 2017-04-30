@@ -17,7 +17,7 @@ public class Satellite : MonoBehaviour
 
 	public string tle1;			// TLE
 	public string tle2;			// TLE
-	public string tle3;			// TLE
+	public string tle3;			// TLEh
 
 	private float speed;
 	private Vector3 rotationAxis;
@@ -192,7 +192,10 @@ public class Satellite : MonoBehaviour
 
 	//塗る
 	public int Paint(int playerColor){
-		rayPainter.Paint (playerColor);
+		Debug.Log ("sat paint");
+		Vector3 rayDirection = EarthObject.transform.position - this.transform.position;
+
+		rayPainter.Paint (playerColor,rayDirection.normalized);
 		return energyComsumption;
 	}
 

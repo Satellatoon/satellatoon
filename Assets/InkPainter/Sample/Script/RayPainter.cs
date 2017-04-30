@@ -9,8 +9,9 @@ public class RayPainter : MonoBehaviour
 	private Brush brushOpponent;
 
 
-	public void Paint(int playerColor){
-		Ray ray = new Ray (transform.position, -transform.up);
+	public void Paint(int playerColor,Vector3 dir){
+		//Ray ray = new Ray (transform.position, -transform.up);
+		Ray ray = new Ray (transform.position, dir);
 		bool success = true;
 		RaycastHit hitInfo;
 		Debug.Log ("update");
