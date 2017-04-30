@@ -153,6 +153,7 @@ public class Satellite : MonoBehaviour
 		// 特定の位置に移動して 地球を向く
 		transform.position = pos;
 		transform.LookAt (new Vector3 (0, 0, 0));
+		transform.Rotate (new Vector3 (0, 90, 0));
 	}
 
 	void OrbitToolsTest(){
