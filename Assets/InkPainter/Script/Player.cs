@@ -223,7 +223,7 @@ public class Player : MonoBehaviour {
 					return;
 				}
 				// 相手がのっているかチェック
-				if (true == satellite_val.isUserRiding) {
+				if (false == satellite_val.isUserRiding) {
 					Debug.Log ("satellite:"+strValue+" is user riding........");
 					if (Input.GetKey (this.moveKeyCode)) {
 						Shout (this.audioRideError);
