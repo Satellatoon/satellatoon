@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using uTools;
 
 public class Player : MonoBehaviour {
 	public int energy;
@@ -13,9 +15,10 @@ public class Player : MonoBehaviour {
   public AudioClip audioRide;
   public AudioClip audioRideError;
   public AudioClip audioRecovery;
+  public Image energyGuid;
 
   private string inspectorName;
-  private AudioSource audio = null;
+  private AudioSource audio;
   private KeyCode paintKeyCode = KeyCode.Space;
   private KeyCode recoveryKeyCode = KeyCode.Space;
   private KeyCode moveKeyCode = KeyCode.Space;
@@ -25,6 +28,7 @@ public class Player : MonoBehaviour {
     this.audio = GetComponent<AudioSource>();
     initKeyMap ();
     initSatellite ();
+    this.energyGuid.fillAmount = 1;
 	}
 
   private void rideSatelliteWithMotion(string strValue){
@@ -63,6 +67,22 @@ public class Player : MonoBehaviour {
     }
   }
 
+  void energyGageDown(int val){
+    //var gage = this.energyGuid.Find ("Image").transform;
+    //Image gages = gage.GetComponent (typeof (Image)) as Image;
+    //gages.fillAmount = val / 100;
+    //this.energyGuid.fillAmount = 1.0f/this.energy;
+    this.energyGuid.fillAmount = ((float)this.energy/100);
+    Debug.Log ("energyGuid :" + this.energyGuid.fillAmount.ToString());
+  }
+  void energyGageRecovery(){
+    //var gage = this.energyGuid.Find ("Image").transform;
+    //Image gages = gage.GetComponent (typeof (Image)) as Image;
+    //gages.fillAmount = 1;
+    this.energyGuid.fillAmount = 1;
+    Debug.Log ("energyGuid :" + this.energyGuid.fillAmount.ToString());
+  }
+
 	void Update(){
 		//spaceキーでぬる
 		//time.deltaで要調整？
@@ -70,7 +90,9 @@ public class Player : MonoBehaviour {
     if (energy > satellite.energyComsumption) {
       if (Input.GetKey (this.paintKeyCode)) {
         Shout (this.audioPaint);
-        energy -= satellite.Paint (playerColor);
+        this.energy -= satellite.Paint (playerColor);
+        // TODO
+        energyGageDown(this.energy);
       }
     } else {
       if (Input.GetKey (this.paintKeyCode)) {
@@ -82,6 +104,8 @@ public class Player : MonoBehaviour {
       if (Input.GetKey (this.recoveryKeyCode)) {
         Shout (this.audioRecovery);
         this.energy = this.energyMax;
+        // TODO
+        energyGageRecovery();
       }
     }
 	}
