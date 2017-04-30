@@ -22,6 +22,9 @@ public class Player : MonoBehaviour {
   private KeyCode moveKeyCode = KeyCode.Space;
   public PlayerAnimManager playerAnimMan;
 
+	public float waitNextJumpTimer=15f;
+	float waitNextJumpTimerCnt=0f;
+
 	enum STATE{
 		WAITING,
 		JUMP,
@@ -94,10 +97,11 @@ public class Player : MonoBehaviour {
 
 		switch(state){
 		case STATE.WAITING:
-			
+			waitNextJumpTimerCnt -= Time.deltaTime;
+
 			//spaceキーでぬる
 			//time.deltaで要調整？
-			this.transform.LookAt (this.transform.parent.position);
+			this.transform.LookAt (satellite.EarthObject.transform.position);
 			if (energy > satellite.energyComsumption) {
 				if (Input.GetKey (this.paintKeyCode)) {
 					Shout (this.audioPaint);
@@ -121,9 +125,8 @@ public class Player : MonoBehaviour {
 
 			playerAnimMan.jump = true;
 			state = STATE.JUMP_WAIT;
-			satelliteInfoImg.enabled = false;
-			satelliteInfoText.enabled = false;
 
+			waitNextJumpTimerCnt = waitNextJumpTimer;
 			break;
 		case STATE.JUMP_WAIT:
 			jumpWaitCnt += Time.deltaTime;
@@ -135,6 +138,11 @@ public class Player : MonoBehaviour {
 			//this.transform.position = Vector3.Lerp (this.transform.position, nextSatTransform.position, 3f);
 
 			break;
+		}
+
+		if (GameMaster.instance.GetGameState () == GameMaster.STATE.END) {
+			satelliteInfoImg.enabled = false;
+			satelliteInfoText.enabled = false;
 		}
 	}
   // 体力まんたん
@@ -176,6 +184,9 @@ public class Player : MonoBehaviour {
 			}else{
 				switch (state) {
 				case STATE.WAITING:
+					if (waitNextJumpTimerCnt > 0) {
+						return;
+					}
 					break;
 				default:
 					return;
@@ -196,6 +207,9 @@ public class Player : MonoBehaviour {
 
 						state = STATE.JUMP;
 						satellite_val.isUserRiding = true; // keep
+
+						satelliteInfoImg.enabled = false;
+						satelliteInfoText.enabled = false;
 
 						//rideSatelliteWithMotion (strValue);
 						strValueHolder = strValue;
