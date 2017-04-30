@@ -22,7 +22,7 @@ public class Player : MonoBehaviour {
   private KeyCode moveKeyCode = KeyCode.Space;
   public PlayerAnimManager playerAnimMan;
 
-	public float waitNextJumpTimer=15f;
+	public float waitNextJumpTimer=5f;
 	float waitNextJumpTimerCnt=0f;
 
 	enum STATE{
@@ -56,8 +56,15 @@ public class Player : MonoBehaviour {
 		str_value = str_value.Replace (" (Satellite)", "");
     this.inspectorName = str_value;
 		Debug.Log ("going to " + str_value);
-    this.transform.parent = GameObject.Find(str_value).transform;   
-		this.transform.localPosition = new Vector3 (Random.Range(-10,10),Random.Range(-10,10),Random.Range(-10,10));
+		Transform tmpTransform = GameObject.Find(str_value).transform;
+		this.transform.parent = tmpTransform;
+
+
+		Vector3 parentRight = tmpTransform.right * 10;
+		this.transform.localPosition = parentRight + new Vector3 (Random.Range(-3,3),Random.Range(-3,3),Random.Range(-3,3));
+
+		//random position
+		//this.transform.localPosition = new Vector3 (Random.Range(-10,10),Random.Range(-10,10),Random.Range(-10,10));
 
     this.satellite = this.transform.parent.GetComponent(typeof(Satellite)) as Satellite;
     this.satellite.isUserRiding = true; // setting
@@ -94,6 +101,7 @@ public class Player : MonoBehaviour {
 	Transform nextSatTransform;
 
 	void Update(){
+		Debug.Log (state);
 
 		switch(state){
 		case STATE.WAITING:
@@ -127,6 +135,7 @@ public class Player : MonoBehaviour {
 			state = STATE.JUMP_WAIT;
 
 			waitNextJumpTimerCnt = waitNextJumpTimer;
+
 			break;
 		case STATE.JUMP_WAIT:
 			jumpWaitCnt += Time.deltaTime;
@@ -169,6 +178,10 @@ public class Player : MonoBehaviour {
 
 
 	void OnTriggerStay(Collider other){
+		if (GameMaster.instance.GetGameState () != GameMaster.STATE.PLAYING) {
+			return;
+		}
+
 		if (other.tag.Equals ("Satellite")) {
 		//ほかの衛星と当たればここにくる`
 		//自分以外を排除することに注意
@@ -215,7 +228,7 @@ public class Player : MonoBehaviour {
 						strValueHolder = strValue;
 						nextSatTransform = GameObject.Find(strValue).transform;  
 						//乗り換えたフラグon
-						state = STATE.JUMP_WAIT;
+						state = STATE.JUMP;
 					}
 				}
 			}
