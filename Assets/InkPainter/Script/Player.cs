@@ -14,6 +14,7 @@ public class Player : MonoBehaviour {
   public AudioClip audioRide;
   public AudioClip audioRideError;
   public AudioClip audioRecovery;
+  public Image energyGuid;
 
   private string inspectorName;
   private AudioSource audio = null;
@@ -41,6 +42,7 @@ public class Player : MonoBehaviour {
     initSatellite ();
 		satelliteInfoImg.enabled = false;
 		satelliteInfoText.enabled = false;
+    this.energyGuid.fillAmount = 1;
 	}
 
   private void rideSatelliteWithMotion(string strValue){
@@ -94,6 +96,14 @@ public class Player : MonoBehaviour {
 
     }
   }
+  void energyGageDown(int val){
+    this.energyGuid.fillAmount = ((float)this.energy/100);
+    Debug.Log ("energyGuid :" + this.energyGuid.fillAmount.ToString());
+  }
+  void energyGageRecovery(){
+    this.energyGuid.fillAmount = 1;
+    Debug.Log ("energyGuid :" + this.energyGuid.fillAmount.ToString());
+  }
 
 	public float jumpWaitTime=0.5f;
 	public float jumpWaitCnt=0f;
@@ -114,6 +124,7 @@ public class Player : MonoBehaviour {
 				if (Input.GetKey (this.paintKeyCode)) {
 					Shout (this.audioPaint);
 					energy -= satellite.Paint (playerColor);
+          energyGageDown(this.energy);
 				}
 			} else {
 				if (Input.GetKey (this.paintKeyCode)) {
@@ -125,6 +136,7 @@ public class Player : MonoBehaviour {
 				if (Input.GetKey (this.recoveryKeyCode)) {
 					Shout (this.audioRecovery);
 					this.energy = this.energyMax;
+          energyGageRecovery();
 				}
 			}
 			break;
