@@ -121,7 +121,8 @@ public class Player : MonoBehaviour {
 
 			playerAnimMan.jump = true;
 			state = STATE.JUMP_WAIT;
-
+			satelliteInfoImg.enabled = false;
+			satelliteInfoText.enabled = false;
 
 			break;
 		case STATE.JUMP_WAIT:
@@ -161,45 +162,49 @@ public class Player : MonoBehaviour {
 
 	void OnTriggerStay(Collider other){
 		if (other.tag.Equals ("Satellite")) {
-			//ほかの衛星と当たればここにくる`
-			//自分以外を排除することに注意
+		//ほかの衛星と当たればここにくる`
+		//自分以外を排除することに注意
 
-      Satellite satellite_val = other.GetComponent(typeof(Satellite)) as Satellite;
-      var strValue = satellite_val.ToString ();
-      Debug.Log ("OnTriggerStay :" + strValue);
+		Satellite satellite_val = other.GetComponent(typeof(Satellite)) as Satellite;
+		var strValue = satellite_val.ToString ();
+		Debug.Log ("OnTriggerStay :" + strValue);
 
-      
-        //value.GetInstanceID
-        if(this.inspectorName == strValue){
-          // 自分なので何もしない
-        }else{
-          // 相手がのっているかチェック
-          if (true == satellite_val.isUserRiding) {
-            Debug.Log ("satellite:"+strValue+" is user riding........");
-            Shout (this.audioRideError);
+
+			//value.GetInstanceID
+			if(this.inspectorName == strValue){
+			// 自分なので何もしない
+			}else{
+				switch (state) {
+				case STATE.WAITING:
+					break;
+				default:
+					return;
+				}
+				// 相手がのっているかチェック
+				if (true == satellite_val.isUserRiding) {
+					Debug.Log ("satellite:"+strValue+" is user riding........");
+					Shout (this.audioRideError);
 				} else {
 					strValue = strValue.Replace (" (Satellite)", "");
-			if (Input.GetKey (this.moveKeyCode)) {
-				Debug.Log ("moveKey push!!");
-	            Debug.Log ("satellite:"+strValue+" is not user riding!!");
-	            // のっていなければのりかえ
-
-				state = STATE.JUMP;
-	            satellite_val.isUserRiding = true; // keep
-	            //rideSatelliteWithMotion (strValue);
-						strValueHolder = strValue;
-						nextSatTransform = GameObject.Find(strValue).transform;  
-				//乗り換えたフラグon
-				state = STATE.JUMP_WAIT;
-	          }
-
 					satelliteInfoImg.enabled = true;
 					satelliteInfoText.enabled = true;
-
 					satelliteInfoText.text=strValue+"接近中!";
+					if (Input.GetKey (this.moveKeyCode)) {
+						Debug.Log ("moveKey push!!");
+						Debug.Log ("satellite:"+strValue+" is not user riding!!");
+						// のっていなければのりかえ
 
-        }
-      }
+						state = STATE.JUMP;
+						satellite_val.isUserRiding = true; // keep
+
+						//rideSatelliteWithMotion (strValue);
+						strValueHolder = strValue;
+						nextSatTransform = GameObject.Find(strValue).transform;  
+						//乗り換えたフラグon
+						state = STATE.JUMP_WAIT;
+					}
+				}
+			}
 		}
 	}
 }
