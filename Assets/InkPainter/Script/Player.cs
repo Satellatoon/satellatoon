@@ -78,7 +78,7 @@ public class Player : MonoBehaviour {
     if (this.playerColor == 0) { // player1
       strValue = "isscombined"; // default
     } else { // player2
-      strValue = "isscombined"; // default
+			strValue = "Aura_27"; // default
     }
 
     this.rideSatellite (strValue);
@@ -113,6 +113,12 @@ public class Player : MonoBehaviour {
 	void Update(){
 		Debug.Log (state);
 
+		//追加してほしい
+		if(null != this.satellite){
+			this.satellite.isUserRiding = true; // 外す
+		}
+
+		//Debug.Log ("energyGuid :" + this.energy);
 		switch(state){
 		case STATE.WAITING:
 			waitNextJumpTimerCnt -= Time.deltaTime;
@@ -219,7 +225,13 @@ public class Player : MonoBehaviour {
 				// 相手がのっているかチェック
 				if (true == satellite_val.isUserRiding) {
 					Debug.Log ("satellite:"+strValue+" is user riding........");
-					Shout (this.audioRideError);
+					if (Input.GetKey (this.moveKeyCode)) {
+						Shout (this.audioRideError);
+					}
+
+					//追加してほしい
+					satelliteInfoImg.enabled = false;
+					satelliteInfoText.enabled = false;
 				} else {
 					strValue = strValue.Replace (" (Satellite)", "");
 					satelliteInfoImg.enabled = true;
