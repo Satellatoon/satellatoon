@@ -189,7 +189,7 @@ public class Player : MonoBehaviour {
 	}
 		
 
-	void OnTriggerLeave(Collider other){
+	void OnTriggerExit(Collider other){
 		satelliteInfoImg.enabled = false;
 		satelliteInfoText.enabled = false;
 	}
@@ -207,6 +207,10 @@ public class Player : MonoBehaviour {
 		Satellite satellite_val = other.GetComponent(typeof(Satellite)) as Satellite;
 		var strValue = satellite_val.ToString ();
 		Debug.Log ("OnTriggerStay :" + strValue);
+			if (strValue.Equals("Aura_27"))
+			{
+				Debug.Log("Aura_27");
+			}
 
 
 			//value.GetInstanceID
@@ -223,7 +227,8 @@ public class Player : MonoBehaviour {
 					return;
 				}
 				// 相手がのっているかチェック
-				if (false == satellite_val.isUserRiding) {
+				//if (false == satellite_val.isUserRiding) {
+				if (false) { 
 					Debug.Log ("satellite:"+strValue+" is user riding........");
 					if (Input.GetKey (this.moveKeyCode)) {
 						Shout (this.audioRideError);
