@@ -1,4 +1,6 @@
-﻿Shader "Es/InkPainter/PaintMain"{
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+Shader "Es/InkPainter/PaintMain"{
 	Properties{
 		[HideInInspector]
 		_MainTex("MainTex", 2D) = "white"
@@ -45,7 +47,7 @@
 
 			v2f vert(app_data i) {
 				v2f o;
-				o.screen = mul(UNITY_MATRIX_MVP, i.vertex);
+				o.screen = UnityObjectToClipPos(i.vertex);
 				o.uv = i.uv;
 				return o;
 			}
